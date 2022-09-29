@@ -12,6 +12,7 @@
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+# include	<limits.h>
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdio.h>
