@@ -43,40 +43,46 @@ void	ft_putnbr(int n)
 		ft_putnbr(max_nb / 10);
 	ft_putchar(max_nb % 10 + '0');
 }
-/*void	ft_putnbr_base_cap(unsigned long int n, int base)
+
+void	ft_putnbr_u(unsigned int n)
 {
-	//if (base < 2)
-		//return (NULL);
-	if (n <= 0)
-	{
-		ft_putchar('-');
-		n *= -1;
-	}
-	if (n >= (unsigned long int)base)
-		ft_putnbr_base_cap(n / base, base);
-	if ((n % 16) <= 9)
-		ft_putchar(n % 16 + 48);
-	else if (n % 16 >= 10)
-		ft_putchar(n % 16 + 55);
+	unsigned long int	max_nb;
+
+	max_nb = n;
+	if (max_nb > 9)
+		ft_putnbr_u(max_nb / 10);
+	ft_putchar(max_nb % 10 + '0');
 }
 
-void	ft_putnbr_base_low(unsigned long int n, int base)
+int	ft_strlen(char *s)
 {
-	//if (base < 2)
-		//return (NULL);
-	if (n <= 0)
-	{
-		ft_putchar('-');
-		n *= -1;
-	}
-	if (n >= (unsigned long int)base)
-		ft_putnbr_base_low(n / base, base);
-	if ((n % 16) <= 9)
-		ft_putchar(n % 16 + 48);
-	else if (n % 16 >= 10)
-		ft_putchar(n % 16 + 87);
-}*/
+	int	i;
 
+	i = 0;
+	while(s[i])
+		i++;
+	return (i);
+}
+
+void	ft_putnbr_base(unsigned long int n, char *base)
+{
+	int	lenbase;
+
+	lenbase = ft_strlen(base);
+	if (n > (unsigned long int)lenbase - 1)
+		ft_putnbr_base(n / lenbase, base);
+	ft_putchar(base[n % lenbase]);
+}
+
+void	ft_putnbr_base_p(unsigned long int n, char *base)
+{
+	int	lenbase;
+
+	lenbase = ft_strlen(base);
+	if (n > (unsigned long int)lenbase - 1)
+		ft_putnbr_base_p(n / lenbase, base);
+	ft_putchar(base[n % lenbase]);
+}
 void	ft_check_percentage(va_list args, char s)
 {
 	if (s == 'd' || s == 'i')
@@ -84,15 +90,28 @@ void	ft_check_percentage(va_list args, char s)
 	else if (s == 'c')
 		ft_putchar(va_arg(args, int));
 	else if (s == 's')
-		ft_putstr(va_arg(args, char *));
-	/*else if (s == 'p')
-	
+	{
+		if (va_arg(args, char *) == NULL)
+			ft_putstr("(null)");
+		else
+			ft_putstr(va_arg(args, char *));
+	}
+	else if (s == 'p')
+	{
+		if (va_arg(args, void *) == NULL)
+			ft_putstr("(nil)");
+		else
+		{
+			ft_putstr("0x");
+			ft_putnbr_base_p(va_arg(args, unsigned long int), "0123456789abcdef");
+		}
+	}
 	else if (s == 'u')
-		
+		ft_putnbr_u(va_arg(args, unsigned int));
 	else if (s == 'x')
-		ft_putnbr_base_low(va_arg(args, unsigned long int));
+		ft_putnbr_base(va_arg(args, unsigned long int), "0123456789abcdef");
 	else if (s == 'X')
-		ft_putnbr_base_cap(va_arg(args, unsigned long int));*/
+		ft_putnbr_base(va_arg(args, unsigned long int), "0123456789ABCDEF");
 	else if (s == '%')
 		ft_putchar('%');
 }
@@ -116,10 +135,5 @@ int	ft_printf(const char *s, ...)
 		i++;
 	}
 	va_end (args);
-}
-int	main()
-{
-	ft_printf("%x  %d\n", 123, 23);
-	printf("%X %d", 123, 23);
 	return (0);
 }
