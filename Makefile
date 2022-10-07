@@ -6,7 +6,7 @@
 #    By: nasamadi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/05 11:25:15 by nasamadi          #+#    #+#              #
-#    Updated: 2022/10/06 16:11:31 by nasamadi         ###   ########.fr        #
+#    Updated: 2022/10/07 14:06:59 by nasamadi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,9 @@ CC = gcc
 NAME = libftprintf.a
 MAKE = make
 CFLAGS = -Wall -Wextra -Werror
-SRCS =	./ft_printf.c ./ft_print_char.c ./ft_print_str.c ./ft_print_int.c ./ft_print_ptr.c ./ft_print_hex.c ./ft_print_unsigned.c ./ft_print_percentage.c
-
-HEAD = ./ft_printf.h
-OBJ_DIR = ./obj/
-OBJS = $(SRCS:.c.o)
+SRCS = ft_printf.c ft_printf_utils.c
+HEAD = ft_printf.h
+OBJS = $(SRCS:.c=.o)
 
 $(NAME) : $(OBJS) $(HEAD)
 	@ar -rcs $(NAME) $(OBJS)
@@ -39,7 +37,7 @@ $(NAME) : $(OBJS) $(HEAD)
 
 .c.o :
 	@$(CC) $(FLAGS) -c $<  -o $(<:.c=.o)
-	@echo "$(BLUE)Compiling $< $ $(DEFAULT)"
+	@echo "$(YELLOW)Compiling $< $ $(DEFAULT)"
 
 all : $(NAME)
 
@@ -58,5 +56,4 @@ norminette :
 re : fclean all
 	@echo "$(GREEN)Cleaned and rebuilt everything for ft_printf!$((DEFAULT)"
 
-.PHONY: all clean fclean norminette re
-
+.PHONY: clean fclean norminette all re
